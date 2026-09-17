@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molecular-similarity"
+version = "0.1.0"
+description = "RDKit을 이용한 네 가지 분자 유사도 계산"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = ["rdkit>=2026.3.6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.4", "pyright>=1.1.400", "ruff>=0.12"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["atom_pair", "bcut", "mcs", "tanimoto"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.pyright]
+include = ["src"]
+extraPaths = ["src"]
+pythonVersion = "3.14"
+typeCheckingMode = "standard"
+reportUnnecessaryIsInstance = false
+
+[tool.ruff]
+target-version = "py314"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
