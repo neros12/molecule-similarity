@@ -105,7 +105,7 @@ def ebn_similarity(smiles1: str, smiles2: str):
             어느 한 벡터의 노름이 0이면 0.0을 반환합니다.
     """
     mol1 = Chem.MolFromSmiles(smiles1, sanitize=False)
-    mol2 = Chem.MolFromSmiles(smiles1, sanitize=False)
+    mol2 = Chem.MolFromSmiles(smiles2, sanitize=False)
     mol1.UpdatePropertyCache(strict=False)
     mol2.UpdatePropertyCache(strict=False)
     Chem.FastFindRings(mol1)
