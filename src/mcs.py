@@ -9,18 +9,16 @@ def mcs_similarity(
     smiles2: str,
     *,
     timeout: int = 10,
-    include_chirality: bool = False,
 ):
     if timeout <= 0:
         raise ValueError("timeout must be positive.")
 
     mol1 = Chem.MolFromSmiles(smiles1, sanitize=False)
     mol2 = Chem.MolFromSmiles(smiles2, sanitize=False)
-
-    for molecule in (mol1, mol2):
-        molecule.UpdatePropertyCache(strict=False)
-        if include_chirality:
-            Chem.AssignStereochemistry(molecule, cleanIt=True, force=True)
+    mol1.UpdatePropertyCache(strict=False)
+    mol2.UpdatePropertyCache(strict=False)
+    Chem.FastFindRings(mol1)
+    Chem.FastFindRings(mol2)
 
     result = rdFMCS.FindMCS(
         [mol1, mol2],
@@ -30,7 +28,7 @@ def mcs_similarity(
         bondCompare=cast(rdFMCS.BondCompare, rdFMCS.BondCompare.CompareOrderExact),
         ringMatchesRingOnly=True,
         matchValences=True,
-        matchChiralTag=include_chirality,
+        matchChiralTag=False,
     )
     canceled = cast(bool, result.canceled)
     if canceled:

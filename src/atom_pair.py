@@ -7,9 +7,10 @@ from rdkit.Chem import rdFingerprintGenerator
 def atom_pair_similarity(smiles1: str, smiles2: str):
     mol1 = Chem.MolFromSmiles(smiles1, sanitize=False)
     mol2 = Chem.MolFromSmiles(smiles2, sanitize=False)
-
-    for molecule in (mol1, mol2):
-        molecule.UpdatePropertyCache(strict=False)
+    mol1.UpdatePropertyCache(strict=False)
+    mol2.UpdatePropertyCache(strict=False)
+    Chem.FastFindRings(mol1)
+    Chem.FastFindRings(mol2)
 
     generator = rdFingerprintGenerator.GetAtomPairGenerator(use2D=True)
     fp1 = cast(
@@ -22,7 +23,3 @@ def atom_pair_similarity(smiles1: str, smiles2: str):
     )
 
     return DataStructs.DiceSimilarity(fp1, fp2)
-
-
-if __name__ in "__main__":
-    print(atom_pair_similarity("CCCC", "CCC"))

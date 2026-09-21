@@ -23,6 +23,10 @@ def tanimoto_similarity(
 
     mol1 = Chem.MolFromSmiles(smiles1, sanitize=False)
     mol2 = Chem.MolFromSmiles(smiles2, sanitize=False)
+    mol1.UpdatePropertyCache(strict=False)
+    mol2.UpdatePropertyCache(strict=False)
+    Chem.FastFindRings(mol1)
+    Chem.FastFindRings(mol2)
 
     for molecule in (mol1, mol2):
         molecule.UpdatePropertyCache(strict=False)
